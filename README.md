@@ -1,33 +1,35 @@
 # Stock Sentiment Analysis Using Machine Learning
+
 ## Introduction
-The project aims to develop a sentiment analysis model to predict the movement of stock prices based on textual data from news articles, social media posts, and other sources of financial news and opinions. By analyzing the sentiment expressed in these texts, the model will seek to uncover insights into investor sentiment and market sentiment, which can be valuable indicators for making informed trading decisions.
+
+This project develops a sentiment analysis model to predict stock price movements by analyzing textual data from news articles, social media posts, and other financial sources. By evaluating the sentiment expressed in these texts, the model provides insights into investor and market sentiment, which are valuable for making informed trading decisions.
 
 ## Implementation
-*	The project starts by collecting news headlines and financial data from websites using web scraping or APIs provided by these websites.
-*	Then the required libraries are imported into the code.
-*	The collected news headlines data is preprocessed to remove special characters, normalize text (e.g., convert to lowercase), tokenize sentences into words, remove stopwords, and apply stemming or lemmatization to standardize word forms.
-*	This preprocessing enhances the quality of data used in the project.
-*	Then, financial data and news headlines data are merged and stored in the ‘merged_df’ dataframe.
-*	Next, sentiment scores of news headlines on a particular date are calculated using SentimentIntensityAnalyzer(). Based on these values, sentiment categories and movements are determined.
-*	As the number of neutral sentiments is much less compared to positive and negative sentiments, only two movements are considered: 1 for positive and 0 for negative and neutral.
-*	Now, the data is split into two datasets: a training dataset (75%) and a testing dataset (25%).
-*	Models are implemented on the training datasets, and their predictions are made on the testing dataset to predict stock prices and movements.
-*	Based on the predictions, various calculations such as Accuracy, Precision, F1 score, Recall, ROC AUC, Sharpe Ratio, Maximum Drawdown, No. of Trades Executed, Win Ratio, MAE, and MSE are performed.
-*	Graphs are plotted based on these predictions and calculations accordingly.
 
-### Potential Improvements:
-  * Twitter data should also be utilized as it can influence stock price movements. I was unable to extract data from Twitter due to API limits.
-  *	Changes in market conditions, investor behavior, and external events should influence stock price movements and should also be considered.
- 
+- **Data Collection:** News headlines and financial data are collected from websites using web scraping or APIs.
+- **Data Preprocessing:** The collected news headlines are cleaned by removing special characters, normalizing text (e.g., converting to lowercase), tokenizing sentences into words, removing stopwords, and applying stemming or lemmatization to standardize word forms.
+- **Data Integration:** Financial data and news headlines are merged and stored in a `merged_df` DataFrame.
+- **Sentiment Analysis:** Sentiment scores for news headlines on specific dates are calculated using `SentimentIntensityAnalyzer()`. Sentiment categories and price movements are determined.
+- **Labeling:** Due to the limited number of neutral sentiments, only two movement labels are used: 1 (positive) and 0 (negative or neutral).
+- **Train-Test Split:** The data is split into training (75%) and testing (25%) datasets.
+- **Model Training and Evaluation:** Machine learning models are trained on the training dataset and evaluated on the testing dataset to predict stock price movements.
+- **Performance Metrics:** Key metrics such as Accuracy, Precision, F1 Score, Recall, ROC AUC, Sharpe Ratio, Maximum Drawdown, Number of Trades Executed, Win Ratio, MAE, and MSE are calculated.
+- **Visualization:** Graphs are plotted based on predictions and performance metrics.
 
-### Application
-*	Investment Decision Making
-*	Risk Management
-*	Market Research and Strategy
+## Potential Improvements
 
-### References
-  *	https://www.investopedia.com/terms/s/sentimentindicator.asp
-  *	https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8659448/
-  *	https://www.insightbig.com/post/stock-market-sentiment-prediction-with-openai-and-python
-  *	Stock Market Sentiment Analysis Using Python & Machine Learning
+- **Incorporate Twitter Data:** Utilize Twitter data to capture additional sentiment signals, as it can significantly influence stock price movements. (Note: Data extraction was limited due to API restrictions.)
+- **Adapt to Market Conditions:** Incorporate changes in market conditions, investor behavior, and external events to improve model robustness and accuracy.
 
+## Applications
+
+- **Investment Decision Making:** Supports more informed trading strategies.
+- **Risk Management:** Helps identify and mitigate investment risks.
+- **Market Research and Strategy:** Provides insights for market research and strategic planning.
+
+## References
+
+- [Sentiment Indicator - Investopedia](https://www.investopedia.com/terms/s/sentimentindicator.asp)
+- [Stock Market Sentiment Analysis Using Machine Learning - NCBI](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8659448/)
+- [Stock Market Sentiment Prediction with OpenAI and Python - InsightBig](https://www.insightbig.com/post/stock-market-sentiment-prediction-with-openai-and-python)
+- Stock Market Sentiment Analysis Using Python & Machine Learning
