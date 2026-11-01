@@ -1,0 +1,1590 @@
+{
+  "data": {
+    "rows": {
+      "train": 19642,
+      "valid": 4769,
+      "test": 4750
+    },
+    "periods": {
+      "train": [
+        "2017-01-03",
+        "2021-12-31"
+      ],
+      "valid": [
+        "2022-01-03",
+        "2022-12-30"
+      ],
+      "test": [
+        "2023-01-03",
+        "2023-12-29"
+      ]
+    },
+    "tickers": [
+      "INTC",
+      "NVDA",
+      "AMD",
+      "MU",
+      "GILD",
+      "SBUX",
+      "QCOM",
+      "PYPL",
+      "COST",
+      "CMCSA",
+      "ADBE",
+      "TXN",
+      "PANW",
+      "AMGN",
+      "PEP",
+      "GOOG",
+      "AAPL",
+      "MSFT",
+      "TSLA"
+    ],
+    "test_up_rate": 0.5098947368421053
+  },
+  "sentiment_model": {
+    "valid_accuracy": 0.8245393634840871,
+    "valid_macro_f1": 0.7696620688489476,
+    "best_C": 1,
+    "n_train": 9543,
+    "n_valid": 2388
+  },
+  "models": [
+    {
+      "model": "Logistic Regression",
+      "feature_set": "price",
+      "test": {
+        "accuracy": 0.5145263157894737,
+        "balanced_accuracy": 0.5146778811637879,
+        "auc": 0.5134747063714349,
+        "mcc": 0.02935320112156985,
+        "f1": 0.5157496850062999,
+        "brier": 0.2504497806548089,
+        "log_loss": 0.6940544247691369,
+        "p_value_vs_50": 0.023410939849776508
+      },
+      "auc_ci": [
+        0.4927908698487422,
+        0.5341351046329786
+      ],
+      "ic": {
+        "ic_mean": 0.010779230718899946,
+        "ic_std": 0.2894510676311662,
+        "ic_t_stat": 0.5888200858117647,
+        "ic_positive_days": 0.516,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.47368421052631576
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.4936842105263158
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.5059649122807017
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.512421052631579
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5179674340258282
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5145263157894737
+        }
+      ],
+      "long_short": {
+        "total_return": -0.14575373381456092,
+        "annual_return": -0.14682965036124251,
+        "annual_vol": 0.07679420009418331,
+        "sharpe": -2.0289259231102132,
+        "max_drawdown": -0.17707427867584535,
+        "win_rate": 0.424,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.05587015986928323,
+        "annual_return": -0.05630429615314503,
+        "annual_vol": 0.07679420009418331,
+        "sharpe": -0.7163267961400109,
+        "max_drawdown": -0.1427443179908604,
+        "win_rate": 0.464,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.20480719636320166,
+        "annual_return": 0.20660436851181974,
+        "annual_vol": 0.15723616555061623,
+        "sharpe": 1.2731449789636586,
+        "max_drawdown": -0.07397765627936415,
+        "win_rate": 0.54,
+        "days": 250
+      },
+      "valid_auc": 0.5252297671019901,
+      "best_params": {
+        "C": 0.036916293700061345,
+        "penalty": "l2"
+      }
+    },
+    {
+      "model": "Decision Tree",
+      "feature_set": "price",
+      "test": {
+        "accuracy": 0.512421052631579,
+        "balanced_accuracy": 0.5130469266545781,
+        "auc": 0.5116706536020045,
+        "mcc": 0.026140236874810416,
+        "f1": 0.5017211703958692,
+        "brier": 0.2528792147968038,
+        "log_loss": 0.6990400242430825,
+        "p_value_vs_50": 0.04478498628027925
+      },
+      "auc_ci": [
+        0.4939075949189105,
+        0.5302881685664957
+      ],
+      "ic": {
+        "ic_mean": 0.012070809149503795,
+        "ic_std": 0.25260521242137185,
+        "ic_t_stat": 0.7555515135205979,
+        "ic_positive_days": 0.54,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.52
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.531578947368421
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.5207017543859649
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5094736842105263
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5078607523862998
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.512421052631579
+        }
+      ],
+      "long_short": {
+        "total_return": -0.06089306006785944,
+        "annual_return": -0.06136494352583077,
+        "annual_vol": 0.06739262410466278,
+        "sharpe": -0.9059847853927433,
+        "max_drawdown": -0.11930139724491506,
+        "win_rate": 0.488,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.037879934809088134,
+        "annual_return": 0.03818868863194824,
+        "annual_vol": 0.06739262410466278,
+        "sharpe": 0.5897278588196944,
+        "max_drawdown": -0.09750630912482305,
+        "win_rate": 0.528,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.27631770559701674,
+        "annual_return": 0.2788112975074155,
+        "annual_vol": 0.16137467616997145,
+        "sharpe": 1.6050767736494909,
+        "max_drawdown": -0.09464656369956903,
+        "win_rate": 0.536,
+        "days": 250
+      },
+      "valid_auc": 0.5298156055429212,
+      "best_params": {
+        "max_depth": 9,
+        "min_samples_leaf": 427,
+        "criterion": "gini"
+      }
+    },
+    {
+      "model": "Random Forest",
+      "feature_set": "price",
+      "test": {
+        "accuracy": 0.5122105263157894,
+        "balanced_accuracy": 0.5127654646269448,
+        "auc": 0.5155825678701252,
+        "mcc": 0.025565446131273054,
+        "f1": 0.5033226152197213,
+        "brier": 0.24995520959926504,
+        "log_loss": 0.6930607989049583,
+        "p_value_vs_50": 0.0475936187845993
+      },
+      "auc_ci": [
+        0.4946339273488011,
+        0.5365645473372639
+      ],
+      "ic": {
+        "ic_mean": 0.033456203488755644,
+        "ic_std": 0.296820486146004,
+        "ic_t_stat": 1.7821850213279777,
+        "ic_positive_days": 0.536,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.5242105263157895
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.5189473684210526
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.5045614035087719
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5153684210526316
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5202133632790568
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5122105263157894
+        }
+      ],
+      "long_short": {
+        "total_return": 0.02125551396286518,
+        "annual_return": 0.021427367049977386,
+        "annual_vol": 0.0780596528299703,
+        "sharpe": 0.3104486236915155,
+        "max_drawdown": -0.06280362222438651,
+        "win_rate": 0.504,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.128631191165419,
+        "annual_return": 0.12972428538555603,
+        "annual_vol": 0.0780596528299703,
+        "sharpe": 1.6017687403664231,
+        "max_drawdown": -0.05165155266944588,
+        "win_rate": 0.536,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.39467381205716734,
+        "annual_return": 0.3983903790715786,
+        "annual_vol": 0.1649338269909733,
+        "sharpe": 2.1163933637335255,
+        "max_drawdown": -0.06744032962366076,
+        "win_rate": 0.572,
+        "days": 250
+      },
+      "valid_auc": 0.5388575758994364,
+      "best_params": {
+        "n_estimators": 300,
+        "max_depth": 3,
+        "min_samples_leaf": 173,
+        "max_features": "sqrt"
+      }
+    },
+    {
+      "model": "LightGBM",
+      "feature_set": "price",
+      "test": {
+        "accuracy": 0.5136842105263157,
+        "balanced_accuracy": 0.5137354178904147,
+        "auc": 0.5165748678352218,
+        "mcc": 0.027465750737508007,
+        "f1": 0.5173422482239867,
+        "brier": 0.2500776808092643,
+        "log_loss": 0.6933098896932729,
+        "p_value_vs_50": 0.03061638181445632
+      },
+      "auc_ci": [
+        0.4959669673947132,
+        0.5371465211053903
+      ],
+      "ic": {
+        "ic_mean": 0.02750539097359989,
+        "ic_std": 0.2936343312566954,
+        "ic_t_stat": 1.4810884517106109,
+        "ic_positive_days": 0.528,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.5263157894736842
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.5273684210526316
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.5178947368421053
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5183157894736842
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5171252105558675
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5136842105263157
+        }
+      ],
+      "long_short": {
+        "total_return": -0.04060981943416209,
+        "annual_return": -0.04092795744571187,
+        "annual_vol": 0.07726102629230538,
+        "sharpe": -0.5023569668479095,
+        "max_drawdown": -0.09938110799464328,
+        "win_rate": 0.488,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.06028775398518582,
+        "annual_return": 0.06078442709984522,
+        "annual_vol": 0.07726102629230538,
+        "sharpe": 0.8023111800472467,
+        "max_drawdown": -0.06446651836621775,
+        "win_rate": 0.516,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.30969348922048767,
+        "annual_return": 0.31252331245825604,
+        "annual_vol": 0.1607816679341863,
+        "sharpe": 1.7723255628189414,
+        "max_drawdown": -0.0814896463617607,
+        "win_rate": 0.576,
+        "days": 250
+      },
+      "valid_auc": 0.536502443304873,
+      "best_params": {
+        "n_estimators": 500,
+        "learning_rate": 0.0058526166728671844,
+        "num_leaves": 4,
+        "min_child_samples": 147,
+        "subsample": 0.7072927560542903,
+        "colsample_bytree": 0.5974101833980758,
+        "reg_lambda": 0.0023924713958456806
+      }
+    },
+    {
+      "model": "Logistic Regression",
+      "feature_set": "news",
+      "test": {
+        "accuracy": 0.4829473684210526,
+        "balanced_accuracy": 0.4812693848768874,
+        "auc": 0.4773886850491344,
+        "mcc": -0.03799944801674804,
+        "f1": 0.5275105809926895,
+        "brier": 0.2508466854754071,
+        "log_loss": 0.6948432309098476,
+        "p_value_vs_50": 0.9909908838484817
+      },
+      "auc_ci": [
+        0.4580898180226207,
+        0.4962399599761541
+      ],
+      "ic": {
+        "ic_mean": -0.04523894913937843,
+        "ic_std": 0.25520280131749956,
+        "ic_t_stat": -2.8028320514979446,
+        "ic_positive_days": 0.464,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.4610526315789474
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.45473684210526316
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.46807017543859647
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.4783157894736842
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.4778214486243683
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.4829473684210526
+        }
+      ],
+      "long_short": {
+        "total_return": -0.2475902199908665,
+        "annual_return": -0.24930060227518092,
+        "annual_vol": 0.07029714841519898,
+        "sharpe": -4.0417240981248135,
+        "max_drawdown": -0.2517596097321245,
+        "win_rate": 0.432,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.16837976334720572,
+        "annual_return": -0.16960552814878593,
+        "annual_vol": 0.07029714841519898,
+        "sharpe": -2.6078110266494128,
+        "max_drawdown": -0.17463829901255312,
+        "win_rate": 0.472,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.002912672015028317,
+        "annual_return": 0.0029360075643616312,
+        "annual_vol": 0.13994410174388075,
+        "sharpe": 0.09063410599654906,
+        "max_drawdown": -0.1368014727294733,
+        "win_rate": 0.512,
+        "days": 250
+      },
+      "valid_auc": 0.5192629149508858,
+      "best_params": {
+        "C": 0.02860998602092135,
+        "penalty": "l1"
+      }
+    },
+    {
+      "model": "Decision Tree",
+      "feature_set": "news",
+      "test": {
+        "accuracy": 0.4966315789473684,
+        "balanced_accuracy": 0.496713616022656,
+        "auc": 0.49109829781981323,
+        "mcc": -0.006571713822027541,
+        "f1": 0.4994766589909985,
+        "brier": 0.25271464711453956,
+        "log_loss": 0.6986345918409899,
+        "p_value_vs_50": 0.6839623335145137
+      },
+      "auc_ci": [
+        0.47349607373511793,
+        0.5075409470631579
+      ],
+      "ic": {
+        "ic_mean": -0.0015981739539201155,
+        "ic_std": 0.2534725855147099,
+        "ic_t_stat": -0.0996926310843832,
+        "ic_positive_days": 0.528,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.4926315789473684
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.48947368421052634
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.48210526315789476
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.4825263157894737
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.49635036496350365
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.4966315789473684
+        }
+      ],
+      "long_short": {
+        "total_return": -0.08153907207052935,
+        "annual_return": -0.08216382376240039,
+        "annual_vol": 0.0668486285581673,
+        "sharpe": -1.249019028641372,
+        "max_drawdown": -0.09394937599941522,
+        "win_rate": 0.484,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.015071434946792861,
+        "annual_return": 0.015192917757359314,
+        "annual_vol": 0.0668486285581673,
+        "sharpe": 0.25886530906483035,
+        "max_drawdown": -0.03687986328894566,
+        "win_rate": 0.512,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.19298585115602074,
+        "annual_return": 0.1946711478460441,
+        "annual_vol": 0.1705646846927372,
+        "sharpe": 1.1279987412566785,
+        "max_drawdown": -0.11380724421659194,
+        "win_rate": 0.516,
+        "days": 250
+      },
+      "valid_auc": 0.5232242437511199,
+      "best_params": {
+        "max_depth": 10,
+        "min_samples_leaf": 452,
+        "criterion": "entropy"
+      }
+    },
+    {
+      "model": "Random Forest",
+      "feature_set": "news",
+      "test": {
+        "accuracy": 0.48336842105263156,
+        "balanced_accuracy": 0.4817656235368231,
+        "auc": 0.47927795678786383,
+        "mcc": -0.03694517023269184,
+        "f1": 0.5262548262548262,
+        "brier": 0.2506829881785514,
+        "log_loss": 0.6945151797658066,
+        "p_value_vs_50": 0.989477870354279
+      },
+      "auc_ci": [
+        0.4591690870343013,
+        0.498883880981165
+      ],
+      "ic": {
+        "ic_mean": -0.04539223866113325,
+        "ic_std": 0.274738679542933,
+        "ic_t_stat": -2.6123526272663375,
+        "ic_positive_days": 0.42,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.4631578947368421
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.4610526315789474
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.46807017543859647
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.4749473684210526
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.485120718697361
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.48336842105263156
+        }
+      ],
+      "long_short": {
+        "total_return": -0.183542131827785,
+        "annual_return": -0.18486554849383274,
+        "annual_vol": 0.06965019290052062,
+        "sharpe": -2.898792490355027,
+        "max_drawdown": -0.19816153851395335,
+        "win_rate": 0.44,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.09761849189844252,
+        "annual_return": -0.0983597131084919,
+        "annual_vol": 0.06965019290052062,
+        "sharpe": -1.4515603176606924,
+        "max_drawdown": -0.11730720262181904,
+        "win_rate": 0.476,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.12303138399943347,
+        "annual_return": 0.12407432520495698,
+        "annual_vol": 0.1498527949189268,
+        "sharpe": 0.8552378198157595,
+        "max_drawdown": -0.1334482346910486,
+        "win_rate": 0.508,
+        "days": 250
+      },
+      "valid_auc": 0.5175005253378265,
+      "best_params": {
+        "n_estimators": 200,
+        "max_depth": 3,
+        "min_samples_leaf": 78,
+        "max_features": 0.3
+      }
+    },
+    {
+      "model": "LightGBM",
+      "feature_set": "news",
+      "test": {
+        "accuracy": 0.4882105263157895,
+        "balanced_accuracy": 0.4856968694753988,
+        "auc": 0.48257019347277674,
+        "mcc": -0.02956622446974923,
+        "f1": 0.5497314317466198,
+        "brier": 0.2502014790408739,
+        "log_loss": 0.6935502674460419,
+        "p_value_vs_50": 0.9494584075816588
+      },
+      "auc_ci": [
+        0.4630133790669785,
+        0.5013944632655953
+      ],
+      "ic": {
+        "ic_mean": -0.03741845116147078,
+        "ic_std": 0.2728104183214593,
+        "ic_t_stat": -2.168676931659412,
+        "ic_positive_days": 0.412,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.47578947368421054
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.4663157894736842
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.4807017543859649
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.48505263157894735
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.485120718697361
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.4882105263157895
+        }
+      ],
+      "long_short": {
+        "total_return": -0.17985245212953327,
+        "annual_return": -0.18115231287512912,
+        "annual_vol": 0.07068405704878032,
+        "sharpe": -2.791105197007999,
+        "max_drawdown": -0.19170261860164284,
+        "win_rate": 0.4,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.09354212075182167,
+        "annual_return": -0.09425403205830074,
+        "annual_vol": 0.07068405704878032,
+        "sharpe": -1.3650410432422333,
+        "max_drawdown": -0.10902690115315217,
+        "win_rate": 0.48,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.17930053185205375,
+        "annual_return": 0.18085749476903823,
+        "annual_vol": 0.14796041802156049,
+        "sharpe": 1.1974828660849153,
+        "max_drawdown": -0.12463434578660137,
+        "win_rate": 0.528,
+        "days": 250
+      },
+      "valid_auc": 0.5202738162827623,
+      "best_params": {
+        "n_estimators": 100,
+        "learning_rate": 0.005916386887197523,
+        "num_leaves": 4,
+        "min_child_samples": 49,
+        "subsample": 0.7521536210122847,
+        "colsample_bytree": 0.5377719407798547,
+        "reg_lambda": 0.1531976377619169
+      }
+    },
+    {
+      "model": "Logistic Regression",
+      "feature_set": "price+news",
+      "test": {
+        "accuracy": 0.5090526315789474,
+        "balanced_accuracy": 0.5100189485841413,
+        "auc": 0.5071718723840171,
+        "mcc": 0.020129412733556458,
+        "f1": 0.48926850635129215,
+        "brier": 0.2510018849311823,
+        "log_loss": 0.6951721160076227,
+        "p_value_vs_50": 0.10872803260826346
+      },
+      "auc_ci": [
+        0.4883993991004546,
+        0.5256624385017132
+      ],
+      "ic": {
+        "ic_mean": -0.002140175323091926,
+        "ic_std": 0.2585532422775561,
+        "ic_t_stat": -0.1308788192605993,
+        "ic_positive_days": 0.484,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.4631578947368421
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.4747368421052632
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.49894736842105264
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5061052631578947
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5109489051094891
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5090526315789474
+        }
+      ],
+      "long_short": {
+        "total_return": -0.10858246424832974,
+        "annual_return": -0.10940178048035865,
+        "annual_vol": 0.06730845379616901,
+        "sharpe": -1.6874587717631706,
+        "max_drawdown": -0.16405602297282107,
+        "win_rate": 0.464,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.014804793196158239,
+        "annual_return": -0.014922343441804542,
+        "annual_vol": 0.06730845379616901,
+        "sharpe": -0.18987571473360562,
+        "max_drawdown": -0.12988480057996787,
+        "win_rate": 0.5,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.3227915966652204,
+        "annual_return": 0.325755259496997,
+        "annual_vol": 0.1529490376378169,
+        "sharpe": 1.9206863307847406,
+        "max_drawdown": -0.05339264046250869,
+        "win_rate": 0.552,
+        "days": 250
+      },
+      "valid_auc": 0.5319709865685989,
+      "best_params": {
+        "C": 0.04282030524942259,
+        "penalty": "l1"
+      }
+    },
+    {
+      "model": "Decision Tree",
+      "feature_set": "price+news",
+      "test": {
+        "accuracy": 0.5122105263157894,
+        "balanced_accuracy": 0.5111483437901708,
+        "auc": 0.5052804723879898,
+        "mcc": 0.022422963169612065,
+        "f1": 0.5414605185038591,
+        "brier": 0.25276254479888094,
+        "log_loss": 0.6995027684130285,
+        "p_value_vs_50": 0.0475936187845993
+      },
+      "auc_ci": [
+        0.488108674717814,
+        0.5223386248323203
+      ],
+      "ic": {
+        "ic_mean": 0.01606740978416285,
+        "ic_std": 0.26345578816311427,
+        "ic_t_stat": 0.9642910366761632,
+        "ic_positive_days": 0.548,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.5347368421052632
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.5094736842105263
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.5207017543859649
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5048421052631579
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5098259404828748
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5122105263157894
+        }
+      ],
+      "long_short": {
+        "total_return": -0.05980533134798527,
+        "annual_return": -0.06026905883648637,
+        "annual_vol": 0.067410320348243,
+        "sharpe": -0.8884396228684134,
+        "max_drawdown": -0.0879911414428699,
+        "win_rate": 0.508,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.03749035900007214,
+        "annual_return": 0.037795879986163516,
+        "annual_vol": 0.06740189862781856,
+        "sharpe": 0.5840250974194566,
+        "max_drawdown": -0.05774339254570948,
+        "win_rate": 0.54,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.4397841464841512,
+        "annual_return": 0.443988605786255,
+        "annual_vol": 0.17497970292614634,
+        "sharpe": 2.188344845875955,
+        "max_drawdown": -0.062084320175067376,
+        "win_rate": 0.568,
+        "days": 250
+      },
+      "valid_auc": 0.5387635078698599,
+      "best_params": {
+        "max_depth": 5,
+        "min_samples_leaf": 30,
+        "criterion": "gini"
+      }
+    },
+    {
+      "model": "Random Forest",
+      "feature_set": "price+news",
+      "test": {
+        "accuracy": 0.5077894736842106,
+        "balanced_accuracy": 0.5085469039531669,
+        "auc": 0.5058826805258781,
+        "mcc": 0.017140308734223557,
+        "f1": 0.4935008665511265,
+        "brier": 0.250255938850888,
+        "log_loss": 0.6936614687559965,
+        "p_value_vs_50": 0.14475490224030096
+      },
+      "auc_ci": [
+        0.4859552409303367,
+        0.5272405385127854
+      ],
+      "ic": {
+        "ic_mean": 0.006245518558295915,
+        "ic_std": 0.2794713075523338,
+        "ic_t_stat": 0.35334689607389835,
+        "ic_positive_days": 0.488,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.5031578947368421
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.49473684210526314
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.49403508771929827
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5023157894736842
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5117911285794498
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5077894736842106
+        }
+      ],
+      "long_short": {
+        "total_return": -0.09082533515088875,
+        "annual_return": -0.09151763017078995,
+        "annual_vol": 0.07369883537701236,
+        "sharpe": -1.2653834639208614,
+        "max_drawdown": -0.11768658265741039,
+        "win_rate": 0.468,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.004812648069989489,
+        "annual_return": 0.004851242493785657,
+        "annual_vol": 0.07369883537701236,
+        "sharpe": 0.10234506916042134,
+        "max_drawdown": -0.08163967688627682,
+        "win_rate": 0.492,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.2698046509404588,
+        "annual_return": 0.2722334463021452,
+        "annual_vol": 0.16370137024334824,
+        "sharpe": 1.552922324583316,
+        "max_drawdown": -0.05837299545873398,
+        "win_rate": 0.576,
+        "days": 250
+      },
+      "valid_auc": 0.543966112278333,
+      "best_params": {
+        "n_estimators": 200,
+        "max_depth": 3,
+        "min_samples_leaf": 294,
+        "max_features": "sqrt"
+      }
+    },
+    {
+      "model": "LightGBM",
+      "feature_set": "price+news",
+      "test": {
+        "accuracy": 0.508421052631579,
+        "balanced_accuracy": 0.5090745344082451,
+        "auc": 0.5109644268886864,
+        "mcc": 0.018184785433223456,
+        "f1": 0.4968756733462616,
+        "brier": 0.2503216556732872,
+        "log_loss": 0.693796746211589,
+        "p_value_vs_50": 0.12584404592368734
+      },
+      "auc_ci": [
+        0.4909873446055151,
+        0.5319257806737856
+      ],
+      "ic": {
+        "ic_mean": 0.013213961170203063,
+        "ic_std": 0.2711070459967319,
+        "ic_t_stat": 0.7706589487048832,
+        "ic_positive_days": 0.492,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.5157894736842106
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.508421052631579
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.5031578947368421
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5153684210526316
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5123526108927569
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.508421052631579
+        }
+      ],
+      "long_short": {
+        "total_return": -0.0465391281567783,
+        "annual_return": -0.04690257071793935,
+        "annual_vol": 0.07438010436882767,
+        "sharpe": -0.6087450250984828,
+        "max_drawdown": -0.1038781088163111,
+        "win_rate": 0.46,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.05373739031429414,
+        "annual_return": 0.054178731146092396,
+        "annual_vol": 0.07438010436882767,
+        "sharpe": 0.7464560848672197,
+        "max_drawdown": -0.07201477832244829,
+        "win_rate": 0.512,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.2420410250707523,
+        "annual_return": 0.24419665241012511,
+        "annual_vol": 0.16132223594278391,
+        "sharpe": 1.4351624376284902,
+        "max_drawdown": -0.08216744758280758,
+        "win_rate": 0.576,
+        "days": 250
+      },
+      "valid_auc": 0.5405358410632204,
+      "best_params": {
+        "n_estimators": 400,
+        "learning_rate": 0.006554850607059105,
+        "num_leaves": 4,
+        "min_child_samples": 37,
+        "subsample": 0.5682989224757629,
+        "colsample_bytree": 0.6956403599665649,
+        "reg_lambda": 7.477103979235125
+      }
+    },
+    {
+      "model": "Logistic Regression",
+      "feature_set": "vader",
+      "test": {
+        "accuracy": 0.4945263157894737,
+        "balanced_accuracy": 0.4938323103509922,
+        "auc": 0.48823907281761403,
+        "mcc": -0.012363199433285814,
+        "f1": 0.5162200282087447,
+        "brier": 0.25029888914030557,
+        "log_loss": 0.6937451216368049,
+        "p_value_vs_50": 0.7790531393487186
+      },
+      "auc_ci": [
+        0.47008803434434904,
+        0.5075472241463248
+      ],
+      "ic": {
+        "ic_mean": -0.02880299208357846,
+        "ic_std": 0.2811652769583307,
+        "ic_t_stat": -1.6197422988580048,
+        "ic_positive_days": 0.452,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.47368421052631576
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.4905263157894737
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.48
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.48378947368421055
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.48736664795058954
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.4945263157894737
+        }
+      ],
+      "long_short": {
+        "total_return": -0.13806054245975152,
+        "annual_return": -0.1390844023343536,
+        "annual_vol": 0.0762096747990295,
+        "sharpe": -1.9265340027407414,
+        "max_drawdown": -0.15100995450100685,
+        "win_rate": 0.424,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.04990797362999799,
+        "annual_return": -0.05029702450591056,
+        "annual_vol": 0.07620421469299447,
+        "sharpe": -0.6391841978081862,
+        "max_drawdown": -0.10237681836155454,
+        "win_rate": 0.488,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.13301484409182063,
+        "annual_return": 0.13414735575459624,
+        "annual_vol": 0.14114706554819292,
+        "sharpe": 0.9622946253852186,
+        "max_drawdown": -0.12110888364405159,
+        "win_rate": 0.524,
+        "days": 250
+      },
+      "valid_auc": 0.521376761729641,
+      "best_params": {
+        "C": 0.014230716890844465,
+        "penalty": "l1"
+      }
+    },
+    {
+      "model": "TF-IDF + LogReg (headline text)",
+      "feature_set": "text",
+      "test": {
+        "accuracy": 0.49705263157894736,
+        "balanced_accuracy": 0.49402562705554187,
+        "auc": 0.4877203987786641,
+        "mcc": -0.012546993460638855,
+        "f1": 0.5674452290421872,
+        "brier": 0.2500273197613358,
+        "log_loss": 0.6932018214942234,
+        "p_value_vs_50": 0.663038533866779
+      },
+      "auc_ci": [
+        0.46948271929114554,
+        0.5045659618180655
+      ],
+      "ic": {
+        "ic_mean": -0.029836801557249427,
+        "ic_std": 0.25399428972286114,
+        "ic_t_stat": -1.8573695321717039,
+        "ic_positive_days": 0.472,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.4905263157894737
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.4936842105263158
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.49543859649122807
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.4922105263157895
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.49213924761370015
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.49705263157894736
+        }
+      ],
+      "long_short": {
+        "total_return": -0.12613810203745957,
+        "annual_return": -0.12708019670662585,
+        "annual_vol": 0.0694894048580876,
+        "sharpe": -1.9206681562691874,
+        "max_drawdown": -0.14579523226265323,
+        "win_rate": 0.452,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.0367716753978411,
+        "annual_return": -0.03706032937578385,
+        "annual_vol": 0.06948547496036367,
+        "sharpe": -0.5087982363104392,
+        "max_drawdown": -0.07473570075159552,
+        "win_rate": 0.488,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.19025637092680214,
+        "annual_return": 0.1919159703042177,
+        "annual_vol": 0.14502405444655206,
+        "sharpe": 1.2830777295374978,
+        "max_drawdown": -0.1135306576453422,
+        "win_rate": 0.524,
+        "days": 250
+      },
+      "valid_auc": 0.5206055622804273,
+      "best_params": {
+        "max_ngram": 1,
+        "min_df": 4,
+        "C": 0.0030525366894536385
+      }
+    },
+    {
+      "model": "LSTM (deep learning)",
+      "feature_set": "price+news",
+      "test": {
+        "accuracy": 0.5101052631578947,
+        "balanced_accuracy": 0.5126432671870965,
+        "auc": 0.5073961374967721,
+        "mcc": 0.026153087540804698,
+        "f1": 0.4444974934351874,
+        "brier": 0.2511160430762903,
+        "log_loss": 0.6954149857890443,
+        "p_value_vs_50": 0.08403580206539585
+      },
+      "auc_ci": [
+        0.48915272583798186,
+        0.5277586464604364
+      ],
+      "ic": {
+        "ic_mean": -0.010024707698592986,
+        "ic_std": 0.27096369703637224,
+        "ic_t_stat": -0.5849659853276076,
+        "ic_positive_days": 0.472,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.48
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.48526315789473684
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.49894736842105264
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5098947368421053
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5075800112296462
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5101052631578947
+        }
+      ],
+      "long_short": {
+        "total_return": -0.1859941920084084,
+        "annual_return": -0.18733318908032104,
+        "annual_vol": 0.07760899285184678,
+        "sharpe": -2.6330260139344057,
+        "max_drawdown": -0.19599579527949051,
+        "win_rate": 0.42,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": -0.10032731394818084,
+        "annual_return": -0.10108793010088601,
+        "annual_vol": 0.07760899285184678,
+        "sharpe": -1.3342074583009866,
+        "max_drawdown": -0.16311697926830537,
+        "win_rate": 0.468,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.16183202242702843,
+        "annual_return": 0.16322703992398435,
+        "annual_vol": 0.15788471142763555,
+        "sharpe": 1.036474944377242,
+        "max_drawdown": -0.06795919687012641,
+        "win_rate": 0.54,
+        "days": 250
+      },
+      "valid_auc": 0.5357490661214326,
+      "best_params": {
+        "seq_len": 5,
+        "hidden": 64,
+        "layers": 1,
+        "dropout": 0.40378870351829843,
+        "lr": 0.00206254875011676,
+        "weight_decay": 1.4418961473459702e-06,
+        "epochs": 2
+      }
+    },
+    {
+      "model": "Ensemble (top 3 by validation AUC)",
+      "feature_set": "price+news",
+      "test": {
+        "accuracy": 0.5063157894736842,
+        "balanced_accuracy": 0.5061682217133323,
+        "auc": 0.5117969302016737,
+        "mcc": 0.012335444759202592,
+        "f1": 0.5147941237326712,
+        "brier": 0.2505223592009266,
+        "log_loss": 0.6942219977001335,
+        "p_value_vs_50": 0.19598286082437572
+      },
+      "auc_ci": [
+        0.49270465698693555,
+        0.5305981038442232
+      ],
+      "ic": {
+        "ic_mean": 0.014746951095075561,
+        "ic_std": 0.271981461663044,
+        "ic_t_stat": 0.8573002313909093,
+        "ic_positive_days": 0.552,
+        "ic_days": 250
+      },
+      "confidence": [
+        {
+          "coverage": 0.1,
+          "n": 475,
+          "accuracy": 0.5347368421052632
+        },
+        {
+          "coverage": 0.2,
+          "n": 950,
+          "accuracy": 0.5126315789473684
+        },
+        {
+          "coverage": 0.3,
+          "n": 1425,
+          "accuracy": 0.511578947368421
+        },
+        {
+          "coverage": 0.5,
+          "n": 2375,
+          "accuracy": 0.5132631578947369
+        },
+        {
+          "coverage": 0.75,
+          "n": 3562,
+          "accuracy": 0.5148792813026389
+        },
+        {
+          "coverage": 1.0,
+          "n": 4750,
+          "accuracy": 0.5063157894736842
+        }
+      ],
+      "long_short": {
+        "total_return": -0.0541922046674993,
+        "annual_return": -0.05461368303978287,
+        "annual_vol": 0.07438510624009911,
+        "sharpe": -0.7179008719769264,
+        "max_drawdown": -0.11414947159897282,
+        "win_rate": 0.504,
+        "days": 250
+      },
+      "long_short_gross": {
+        "total_return": 0.04528279954559067,
+        "annual_return": 0.045653208607826956,
+        "annual_vol": 0.07438510624009911,
+        "sharpe": 0.637209110317638,
+        "max_drawdown": -0.07795953745860751,
+        "win_rate": 0.556,
+        "days": 250
+      },
+      "long_top": {
+        "total_return": 0.291527396516297,
+        "annual_return": 0.29417334881541235,
+        "annual_vol": 0.16443559910228703,
+        "sharpe": 1.6507924069998068,
+        "max_drawdown": -0.08288869247761077,
+        "win_rate": 0.556,
+        "days": 250
+      },
+      "valid_auc": 0.5441808232158136,
+      "best_params": {
+        "members": [
+          "Random Forest",
+          "LightGBM",
+          "Decision Tree"
+        ]
+      }
+    }
+  ],
+  "baselines": {
+    "Majority class from training": {
+      "accuracy": 0.5098947368421053,
+      "balanced_accuracy": 0.5,
+      "auc": 0.5,
+      "mcc": 0.0,
+      "f1": 0.675404350250976,
+      "brier": 0.4901052631578947,
+      "log_loss": 6.771054947552652,
+      "p_value_vs_50": 0.08860341706882383
+    },
+    "Gap reversal rule (minus opening gap)": {
+      "auc": 0.5121073010576019,
+      "ic": {
+        "ic_mean": 0.03300001077963778,
+        "ic_std": 0.316724840835513,
+        "ic_t_stat": 1.6474109924323836,
+        "ic_positive_days": 0.528,
+        "ic_days": 250
+      },
+      "long_short": {
+        "total_return": 0.016999218931788906,
+        "annual_return": 0.017136371329712574,
+        "annual_vol": 0.0842835503060743,
+        "sharpe": 0.24351244612950723,
+        "max_drawdown": -0.05512396494473304,
+        "win_rate": 0.472,
+        "days": 250
+      }
+    },
+    "Sentiment rule (mean net sentiment)": {
+      "auc": 0.5145479687912351,
+      "ic": {
+        "ic_mean": 0.03726586687154072,
+        "ic_std": 0.23219632062267795,
+        "ic_t_stat": 2.5376159703706462,
+        "ic_positive_days": 0.572,
+        "ic_days": 250
+      },
+      "long_short": {
+        "total_return": -0.01695110238207087,
+        "annual_return": -0.017085546097494353,
+        "annual_vol": 0.06837916358594072,
+        "sharpe": -0.2179483836232034,
+        "max_drawdown": -0.11165702155323876,
+        "win_rate": 0.5,
+        "days": 250
+      }
+    },
+    "Momentum rule (yesterday's return)": {
+      "auc": 0.49140875735312894,
+      "ic": {
+        "ic_mean": -0.01266263893217495,
+        "ic_std": 0.3004976369949018,
+        "ic_t_stat": -0.6662744608316935,
+        "ic_positive_days": 0.484,
+        "ic_days": 250
+      },
+      "long_short": {
+        "total_return": -0.16158392536660804,
+        "annual_return": -0.1627651973259442,
+        "annual_vol": 0.08265096017189409,
+        "sharpe": -2.1074015718957892,
+        "max_drawdown": -0.20500684230421184,
+        "win_rate": 0.488,
+        "days": 250
+      }
+    }
+  },
+  "buy_and_hold": {
+    "total_return": 0.22622211071420906,
+    "annual_return": 0.22822432974577822,
+    "annual_vol": 0.15449642591595006,
+    "sharpe": 1.4079840065816673,
+    "max_drawdown": -0.10580854940729412,
+    "win_rate": 0.54,
+    "days": 250
+  },
+  "production_model": "Random Forest"
+}

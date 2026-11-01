@@ -1,0 +1,58 @@
+# Universe: Nasdaq-100 companies with steady company-specific coverage in FNSPID.
+# A ticker enters the panel on its coverage start date, so years without news are not mistaken for quiet years.
+universe:
+  tickers: [INTC, NVDA, AMD, MU, GILD, SBUX, QCOM, PYPL, COST, CMCSA, ADBE, TXN, PANW, AMGN, PEP, GOOG, AAPL, MSFT, TSLA]
+  coverage_start:
+    GOOG: "2019-01-01"
+    AAPL: "2022-01-01"
+    MSFT: "2022-01-01"
+    TSLA: "2022-01-01"
+  benchmark: SPY
+  volatility_index: ^VIX
+  # a headline counts as company news only if it names the company or its ticker
+  company_names:
+    INTC: Intel
+    NVDA: Nvidia
+    AMD: Advanced Micro|AMD
+    MU: Micron
+    GILD: Gilead
+    SBUX: Starbucks
+    QCOM: Qualcomm
+    PYPL: PayPal
+    COST: Costco
+    CMCSA: Comcast
+    ADBE: Adobe
+    TXN: Texas Instruments
+    PANW: Palo Alto Networks
+    AMGN: Amgen
+    PEP: PepsiCo|Pepsi
+    GOOG: Google|Alphabet
+    AAPL: Apple
+    MSFT: Microsoft
+    TSLA: Tesla
+
+period:
+  start: "2017-01-01"
+  end: "2023-12-31"
+  train_end: "2021-12-31"   # 2017-2021 train
+  valid_end: "2022-12-31"   # 2022 validation (hyperparameter tuning), 2023 untouched test
+
+news:
+  dataset: benstaf/FNSPID-filtered-nasdaq-100
+  files:
+    - data/train-00000-of-00002.parquet
+    - data/train-00001-of-00002.parquet
+  symbol_aliases: {}
+
+backtest:
+  cost_bps: 2   # per side; positions are opened at the open and closed at the close
+
+tuning:
+  n_trials: 40
+  lstm_trials: 20
+  seed: 42
+
+paths:
+  data_dir: data
+  reports_dir: reports
+  models_dir: models

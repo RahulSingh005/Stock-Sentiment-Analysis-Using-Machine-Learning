@@ -1,116 +1,169 @@
-# Stock Sentiment Analysis: what news sentiment can and can't predict
+# Stock Movement Prediction from Company News
 
-This project started as "predict GOOGL and MSFT moves from news sentiment", and the first version reported 98% accuracy. That number didn't survive a closer look, so I rebuilt the evaluation from scratch. This README covers what went wrong, what the data actually supports, and the model that holds up.
+[![CI](https://github.com/RahulSingh005/Stock-Sentiment-Analysis-Using-Machine-Learning/actions/workflows/ci.yml/badge.svg)](https://github.com/RahulSingh005/Stock-Sentiment-Analysis-Using-Machine-Learning/actions/workflows/ci.yml)
 
-**In short**
+Can company news headlines predict how a stock moves the next trading day? This project answers that end to end: a finance sentiment model, a leak-free daily dataset for 19 Nasdaq stocks (2017–2023), tuned ML and deep-learning models, a cost-aware backtest, and a FastAPI service that scores new headlines.
 
-- **The 98% was leakage.** The label was computed from the model's own sentiment inputs, and the price model used same-day High/Low to "predict" the close.
-- **Sentiment can't call tomorrow's direction.** Under an honest walk-forward test, every model lands at 38–56% accuracy, against a 53–55% majority-class baseline.
-- **It's a better fit for volatility.** Predicting *how big* tomorrow's move will be works: a log-HAR model with the earnings calendar cuts forecast error by **12%** versus a 20-day average (skill R² **0.31** GOOGL, **0.24** MSFT), and still wins by about 10% on days with no earnings.
+It started as an IIT Roorkee Finance Club project. The first version reported 98% accuracy, which turned out to be leakage, so I rebuilt it to the standard I would expect from production research: no look-ahead, a held-out test year, baselines for every claim, and tests that enforce all of it.
 
-![Leaky vs honest accuracy](images/leakage_vs_reality.png)
+## Key results
 
-## What was wrong with the first version
+- **The sentiment model reads market-moving news well.** It is a TF-IDF + logistic regression classifier with **82.5% accuracy** (3 classes) on held-out financial headlines. On days with bullish company news, stocks had already beaten the market by **+54 bps** by the next open; on bearish days they lagged by **−63 bps** (t = 14.0, 16,881 stock-days).
+- **That move is priced in before anyone can trade it.** From the open to the close the difference is ~0 bps, and every predictive model lands near chance on the 2023 test year (best AUC **0.517**; the model picked on validation scores **0.512**, 95% CI 0.493–0.531).
+- **The small edge that exists does not survive costs.** A market-neutral long-short strategy earns **+4.6% a year before costs (Sharpe 0.64)** but loses money at a realistic 2 bps per trade.
 
-| Issue | Effect |
+![News is priced in before the open](reports/figures/reaction.png)
+
+In short, the sentiment signal is real and the market is fast. That is the honest answer to the original question, and the pipeline below is built so the answer can be trusted.
+
+## The prediction problem
+
+Most FNSPID timestamps have a date but no time of day, so a headline dated Monday could have come out after Monday's close. Using it to predict Monday-close to Tuesday-close would leak the future. The setup therefore mirrors what a trader could actually do:
+
+- **When:** before each session opens.
+- **Inputs:** every company headline dated up to the previous day, prices up to the previous close, and the opening gap.
+- **Target:** does the stock **beat the market (SPY) from today's open to today's close**? Company news can explain the company-specific part of a move, not whether the whole market rises, so the target is market-relative.
+- **Split by time:** train 2017–2021 (19,642 stock-days), tune on 2022 (4,769), test once on 2023 (4,750).
+
+## Pipeline
+
+```mermaid
+flowchart LR
+    N[FNSPID news<br/>358k tagged headlines] --> C[Clean and filter<br/>company-specific, no spam]
+    C --> A[Align to sessions<br/>public before the open]
+    A --> S[Finance sentiment model<br/>TF-IDF + logistic regression]
+    P[Yahoo Finance prices<br/>19 stocks, SPY, VIX] --> F
+    S --> F[Daily features<br/>sentiment, events, news volume,<br/>gap, returns, volatility]
+    F --> M[Models tuned with Optuna on 2022<br/>LR, tree, RF, LightGBM, TF-IDF, LSTM]
+    M --> E[Test on 2023<br/>AUC, IC, backtest, baselines]
+    M --> API[FastAPI service<br/>Docker]
+```
+
+**Data.** FNSPID (Nasdaq-100 subset) maps each article to a ticker. I keep only headlines that name the company or its ticker, drop auto-generated items (13F holdings, options-activity, ETF listicles) and duplicates, leaving 45,331 headlines. Each stock enters the panel when its coverage starts (Google 2019, Apple, Microsoft and Tesla 2022), so a year with no data is never mistaken for a quiet year.
+
+**Features.** Per stock and session:
+- Sentiment from the finance model and from VADER (as a baseline).
+- Event flags pulled from headlines: upgrades, downgrades, earnings beats and misses, legal news.
+- News volume, and how unusual it is against the prior 20 sessions.
+- Price context: opening gap, past returns, volatility, RSI, the market's move, and VIX.
+
+**Models.** Every model is tuned with Optuna on the 2022 validation year (40 trials each, 20 for the LSTM, maximising ROC AUC), refit on 2017–2022, and scored once on 2023:
+
+| Model | Inputs | Notes |
+|---|---|---|
+| Logistic regression | price / news / both | L1 or L2, tuned C |
+| Decision tree | price / news / both | depth, leaf size, criterion |
+| Random forest | price / news / both | trees, depth, leaf size, feature fraction |
+| LightGBM | price / news / both | leaves, learning rate, sampling, regularisation |
+| TF-IDF + logistic regression | raw headline text | the classic bag-of-words approach, without leakage |
+| LSTM (PyTorch) | last 5–20 sessions of features | sequence length, width, layers, dropout, learning rate |
+| Ensemble | top 3 models by validation AUC | probability average |
+
+## Results on 2023 (never touched during development)
+
+![Model comparison](reports/figures/model_comparison.png)
+
+| Metric (model chosen on validation: ensemble) | Value |
 |---|---|
-| `Movement` was defined as `Positive - Negative > 0`, and both were model inputs | The classifier only had to rediscover its own label (97% / 95% when reproduced) |
-| Same-day `Close` predicted from same-day `Open`, `High`, `Low` | R² 0.91 on GOOGL, yet `(High + Low) / 2` with no model scores 0.97 |
-| "Google" and "Microsoft" news files are the same 46,043 general-news articles | Only 0.2% of headlines mention Google; there is no company signal to find |
-| All of a day's text was concatenated and scored as one string | VADER saturates on long text; articles are now scored one at a time |
+| ROC AUC | 0.512 (95% CI 0.493–0.531, day-level bootstrap) |
+| Accuracy | 50.6% overall, 53.5% on the 10% most confident calls |
+| Daily information coefficient | +0.015 (t = 0.9) |
+| Long-short Sharpe, before / after costs | +0.64 / −0.72 |
 
-The trading metrics in the notebooks (Sharpe, win ratio) were built on the same labels, so they inherit the problem. I kept the original notebooks for reference, but their numbers shouldn't be read as results.
+What the results say:
 
-## Approach
+- **Price context carries what little signal there is.** Price-only models are the most stable (test AUC 0.512–0.517). A large opening gap tends to partly reverse during the day, and a one-line "gap reversal" rule is as good as most models.
+- **News-only models learned a relationship that flipped.** They looked useful on 2022 (AUC 0.52) but scored 0.48–0.49 on 2023. Meanwhile, the fixed rule "higher sentiment, higher return" had a real 2023 signal (IC +0.037, t = 2.5). The relationship between news tone and next-session returns is weak and changes with the market regime.
+- **Deep learning does not change the picture.** The LSTM (0.507) and the bag-of-words model (0.488) do no better than trees on this much data.
 
-**Data.** 2023 daily OHLCV for GOOGL and MSFT (250 sessions) and 46,043 news articles (headline + summary). Each article is scored with VADER. About 11% are tagged as market-relevant by keyword (rates, inflation, tech, earnings, and so on), so that subset can be tested on its own.
+![Ablation](reports/figures/ablation.png)
 
-**No look-ahead.** Each article is assigned to the first session that closes after it was published: news after 4 pm ET counts toward the next day, and weekend news rolls into Monday. Every feature at day *t* uses only what was known at that day's close, and every target is day *t+1*.
+![Backtest](reports/figures/backtest.png)
 
-**Evaluation.** Walk-forward: the model is refit each day on all earlier days and predicts the next one, giving 109 out-of-sample days per ticker (late July to December 2023). Every model is compared with a simple baseline, because a metric without one doesn't say much.
+The backtest buys the top third and shorts the bottom third of stocks each morning, closes at the bell, and charges costs on both sides. The gross edge is +4.6% a year; at 1 bp per side it breaks even, and at 2 bps it loses 5.5% a year. Full tables, including every model, baseline and cost level, are in [reports/results.md](reports/results.md).
 
-## Results
+<p float="left">
+  <img src="reports/figures/confidence.png" width="49%" />
+  <img src="reports/figures/monthly_ic.png" width="49%" />
+</p>
 
-### 1. Direction: sentiment doesn't call it
+## Using the API
 
-| Features (logistic regression) | GOOGL acc | MSFT acc |
-|---|---|---|
-| Majority-class baseline | 55.0% | 53.2% |
-| All-news sentiment | 46.8% | 52.3% |
-| Market-news sentiment | 56.0% | 54.1% |
-| Sentiment + recent price action | 51.4% | 47.7% |
+```bash
+pip install -e ".[api]"
+stocksent serve          # interactive docs at http://localhost:8000/docs
+```
 
-Gradient boosting does worse (38–50%). The best result is within one day of the baseline on 109 days, which is noise. Day-to-day changes in sentiment have no measurable relationship with next-day returns.
+```bash
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" -d '{
+  "ticker": "MSFT",
+  "headlines": [
+    {"title": "Microsoft beats estimates on cloud strength", "published_at": "2026-10-29"},
+    {"title": "Microsoft cut to Neutral at UBS", "published_at": "2026-10-30T11:15:00Z"}
+  ]
+}'
+```
 
-![Sentiment vs next-day return](images/sentiment_vs_returns.png)
+The service downloads recent prices if none are sent, applies the same session rules as training (only news public before the open counts), and returns the probability that the stock beats the market today with per-headline sentiment:
 
-### 2. Volatility: where the signal is
+```json
+{"ticker": "MSFT", "session": "2023-10-25", "probability_beats_market": 0.48, "signal": "underperform",
+ "headlines_used": 14, "opening_gap": 0.043, "model": "Random Forest", "trained_through": "2022-12-31",
+ "headline_scores": [{"title": "Microsoft (MSFT) Q1 Earnings and Revenues Beat Estimates", "bullish": 0.67, "bearish": 0.18, "neutral": 0.16}]}
+```
 
-The target here is next-day **true range**, the high-to-low span including any overnight gap. The model is a HAR regression (1-, 5- and 20-day average ranges), a standard volatility baseline, plus a flag for the session after an earnings release. Earnings dates are announced weeks ahead, so the flag is known in advance.
+`POST /sentiment` scores a list of headlines on its own, and `GET /health` reports the loaded model. The service also ships as a container:
 
-| Model | MAE vs 20-day avg (GOOGL / MSFT) | Skill R² (GOOGL / MSFT) |
-|---|---|---|
-| Yesterday's range | −25.4% / −18.0% | −0.72 / −0.37 |
-| HAR | −1.5% / +0.7% | +0.03 / +0.09 |
-| HAR + earnings | +4.8% / +5.7% | +0.27 / +0.17 |
-| **Log-HAR + earnings** | **+11.8% / +11.6%** | **+0.31 / +0.24** |
-| Log-HAR + earnings + sentiment | +9.7% / +9.9% | +0.28 / +0.21 |
-| Gradient boosting, all features | −13.4% / −4.8% | −0.07 / −0.01 |
+```bash
+docker build -t stocksent .
+docker run -p 8000:8000 stocksent
+```
 
-Skill R² is measured against the 20-day average, so 0 means "no better than the baseline".
+## Engineering
 
-![Volatility forecasts vs actual](images/volatility_forecast.png)
-
-What the table says:
-
-- **The earnings calendar drives the gain.** Recent ranges alone barely beat the 20-day average. Fitting in log space, which suits right-skewed volatility, adds the rest.
-- **It isn't one lucky day.** On non-earnings days alone, skill R² is still 0.19 (GOOGL) and 0.20 (MSFT).
-- **Sentiment makes it slightly worse.** It adds noise, not information.
-- **Gradient boosting overfits.** With 100–230 training days, simple linear models win.
-
-![Model comparison](images/volatility_models.png)
-
-Full tables, including AUC for flagging high-volatility days, are in [results/summary.md](results/summary.md).
-
-## Limitations
-
-- One year, two tickers, 109 test days, and a single earnings event inside each test window. The direction of the result is clear; the exact size of the gain would move with more data.
-- The news is a general feed, not company-specific, so the conclusion is about this feed rather than about news sentiment in general.
-- VADER is a general-purpose lexicon; a finance-tuned model such as FinBERT may score headlines differently.
-- Earnings dates for 2023 are hard-coded in `analysis/features.py`.
-
-## Next steps
-
-- Use ticker-tagged news and a finance-specific sentiment model, and test again for direction.
-- Add market-wide volatility (VIX) and more tickers and years to the volatility model.
+- **One package, one CLI.** `stocksent ingest | features | train | report | all | serve`, driven by [configs/default.yaml](configs/default.yaml). Raw downloads are cached, so reruns are fast.
+- **Training and serving share code.** The API builds features with the same functions as the training pipeline, so the two cannot drift apart.
+- **Tests guard the assumptions that matter.** These include: features do not change when anything after the open changes; news after the open waits for the next session; date-only stamps are handled conservatively; backtest costs are charged on both sides; the API serves only pre-open news. CI runs ruff and pytest on Python 3.10–3.12.
+- **Runs on a small laptop.** The full pipeline runs in about 30 minutes on 4 GB of RAM, including the first data download; thread pools are capped to keep memory flat.
 
 ## Reproduce
 
 ```bash
-pip install -r requirements.txt
-python run_analysis.py
+pip install -e ".[dl,api,dev]"
+stocksent all            # ingest -> features -> train -> report
+pytest -q
 ```
 
-This regenerates `results/summary.md` and everything in `images/` in a couple of minutes.
-
-## Repository layout
+## Project layout
 
 ```
-analysis/
-  data.py          load prices and news, VADER scoring, align articles to sessions
-  features.py      features and targets (no look-ahead), earnings calendar
-  evaluate.py      audit of the first version, direction and volatility experiments
-  plots.py         figures
-run_analysis.py    runs everything
-results/           summary.md with full metrics
-images/            figures used above
-Data-Set/          2023 prices and news
-*.ipynb            original notebooks, kept for reference
+configs/default.yaml        universe, dates, costs, tuning budget
+src/stocksent/
+  data/                     FNSPID news, Yahoo prices, session alignment
+  features/                 sentiment model, news and market features, dataset assembly
+  models/                   tuned classical models, LSTM
+  evaluation/               metrics (AUC CI, IC, confidence), backtests
+  pipeline.py, report.py    stages and the results report
+  inference.py, api/        live scoring and the FastAPI app
+models/                     trained sentiment model and production classifier
+reports/                    results.md, metrics.json, figures
+tests/                      pytest suite
+legacy/                     the original 2023 notebooks and data
 ```
 
-## References
+## Limitations and next steps
 
-- Corsi, F. (2009). A Simple Approximate Long-Memory Model of Realized Volatility. *Journal of Financial Econometrics*, 7(2), 174–196.
-- Hutto, C. and Gilbert, E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. *ICWSM*.
-- [Sentiment Indicator - Investopedia](https://www.investopedia.com/terms/s/sentimentindicator.asp)
-- [Stock Market Sentiment Analysis Using Machine Learning - NCBI](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8659448/)
+- **Timestamps:** most are dates only, which forces a conservative one-session delay. Intraday news times would allow a fairer test of how fast prices react.
+- **Scope:** 19 large Nasdaq stocks, one test year, and a universe chosen with hindsight (survivorship bias). More stocks and years would tighten the confidence intervals.
+- **Next experiments:** walk-forward retraining each year to adapt to regime changes, and multi-day horizons where post-earnings drift is documented.
+
+## Version history
+
+The first version (in `legacy/`) predicted a "movement" label that was computed from the model's own sentiment inputs, and estimated same-day prices from same-day highs and lows. Both inflate accuracy without any predictive power. The current version replaces that with the time-aware setup above.
+
+## References and data
+
+- Dong et al. (2024), *FNSPID: A Comprehensive Financial News Dataset in Time Series*, KDD. Used through the [Nasdaq-100 subset on Hugging Face](https://huggingface.co/datasets/benstaf/FNSPID-filtered-nasdaq-100).
+- [zeroshot/twitter-financial-news-sentiment](https://huggingface.co/datasets/zeroshot/twitter-financial-news-sentiment) (MIT), used to train the finance sentiment model.
+- Hutto and Gilbert (2014), *VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text*, ICWSM.
+- Prices from Yahoo Finance via `yfinance`.
